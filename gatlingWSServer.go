@@ -3,46 +3,18 @@ package libGatlingWSServer
 import (
 	"net/http"
 
-	iWSServer "github.com/gatlinglab/libGatlingWSServer/internal"
+	"github.com/gatlinglab/libGatlingWSServer/internal/modDataPackage"
 )
-
-type IWJWSSocket interface {
-	Write(msg []byte) error
-	WriteBinary(msg []byte) error
-	Close() error
-	IsClosed() bool
-	LocalAddr()
-	RemoteAddr()
-}
-
-type CBWJConnectedHandler func(IWJWSSocket)
-type CBWJClosedHandler func(IWJWSSocket)
-type CBWJMessageHandler func(IWJWSSocket, int, []byte) // len, data;
 
 type IWJWSServer interface {
 	Initialize(port int) error
 	HttpHandleFunc(pattern string, fn http.HandlerFunc)
+	WSHandleConnected(fn modDataPackage.CBWJConnectedHandler)
+	WSHandleClosed(fn modDataPackage.CBWJClosedHandler)
+	WSHandleMessage(fn modDataPackage.CBWJMessageHandler)
 	Start() error
-	//WSHandleConnected(fn CBWJConnectedHandler)
-	//WSHandleClosed(fn CBWJConnectedHandler)
-	//WSHandleMessage(fn CBWJMessageHandler)
 }
-
-//var g_singleWSServer IWJWSServer = nil
 
 func WWS_NewServer(port int) IWJWSServer {
-	return iWSServer.IWS_NewServer(port)
+	return modDataPackage.NewWSServer()
 }
-
-// func WWS_NewDefaultServer(port int) IWJWSServer {
-// 	inst := iWSServer.IWS_NewServer(port)
-// 	g_singleWSServer = inst
-// 	return inst
-// }
-// func WWS_SetDefaultServer(inst IWJWSServer) {
-// 	g_singleWSServer = inst
-// }
-
-// func WWS_GetDefaultServer() IWJWSServer {
-// 	return g_singleWSServer
-// }

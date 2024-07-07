@@ -46,7 +46,18 @@ func (pInst *CWJWSServer) HttpHandleFunc(pattern string, fn http.HandlerFunc) {
 	pInst.router.HandlerFunc(pattern, fn)
 }
 func (pInst *CWJWSServer) Upgrade(w http.ResponseWriter, r *http.Request) error {
-	return nil
+	return pInst.wsServer.HandleRequest(w, r)
+}
+
+func (pInst *CWJWSServer) WsHandlerConnect(fn func(*honorMelody.Session)) {
+	pInst.wsServer.HandleConnect(fn)
+}
+func (pInst *CWJWSServer) WsHandlerClose(fn func(*honorMelody.Session, int, string) error) {
+	pInst.wsServer.HandleClose(fn)
+}
+
+func (pInst *CWJWSServer) WsHandlerMessage(fn func(*honorMelody.Session, []byte)) {
+	pInst.wsServer.HandleMessage(fn)
 }
 
 /*func (pInst *CWJWSServer) WSHandleConnected(fn func(CWSSocket)) {

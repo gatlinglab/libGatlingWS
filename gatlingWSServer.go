@@ -23,9 +23,9 @@ type IWJWSServer interface {
 	Initialize(port int) error
 	HttpHandleFunc(pattern string, fn http.HandlerFunc)
 	Start() error
-	WSHandleConnected(fn CBWJConnectedHandler)
-	WSHandleClosed(fn CBWJConnectedHandler)
-	WSHandleMessage(fn CBWJMessageHandler)
+	//WSHandleConnected(fn CBWJConnectedHandler)
+	//WSHandleClosed(fn CBWJConnectedHandler)
+	//WSHandleMessage(fn CBWJMessageHandler)
 }
 
 //var g_singleWSServer IWJWSServer = nil

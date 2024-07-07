@@ -1,4 +1,4 @@
-package libGatlingWSServer
+/*package libGatlingWSServer
 
 import (
 	iWSServer "github.com/gatlinglab/libGatlingWSServer/internal"
@@ -20,3 +20,4 @@ func (pInst *cWSExchangeHandler) WSHandlerConnected(socket iWSServer.CWSSocket) 
 func emptyOnConnect(IWJWSSocket) {
 
 }
+*/

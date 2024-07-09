@@ -43,6 +43,7 @@ func (pInst *CGatlingWSServer) Initialize(port int) error {
 
 func (pInst *CGatlingWSServer) Start() error {
 	listenStr := fmt.Sprintf(":%d", pInst.serverPort)
+	fmt.Println("ws server start listen: ", listenStr)
 	err := http.ListenAndServe(listenStr, pInst.router)
 	return err
 }

@@ -1,6 +1,9 @@
 package modDataPackage
 
-import "net/http"
+import (
+	"fmt"
+	"net/http"
+)
 
 type cWJWSRouter struct {
 	handler          map[string]http.HandlerFunc
@@ -20,17 +23,28 @@ func newWJWSRouter(serverInst *CGatlingWSServer) *cWJWSRouter {
 }
 
 func (pInst *cWJWSRouter) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("serveHttp route enter:", r.URL.Path)
 	if r.URL.Path == "/" {
 		pInst.homeHandler(w, r)
 		return
-	}
-	if r.URL.Path == pInst.upgradeRouterKey {
+	} else if r.URL.Path == pInst.upgradeRouterKey {
 		pInst.server.Upgrade(w, r)
+		return
 	}
-	http.NotFound(w, r)
+
+	fn1, exists := pInst.handler[r.URL.Path]
+	if !exists {
+		http.NotFound(w, r)
+	} else {
+		fn1(w, r)
+	}
 }
 
 func (pInst *cWJWSRouter) HandlerFunc(pattern string, fn http.HandlerFunc) {
+	if pattern == "/" {
+		pInst.homeHandler = fn
+		return
+	}
 	newMap := make(map[string]http.HandlerFunc)
 	for key, value := range pInst.handler {
 		newMap[key] = value

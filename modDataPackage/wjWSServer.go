@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/gatlinglab/libGatlingWSServer/internal/honorMelody"
+	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
 )
 
 type CGatlingWSServer struct {
@@ -54,14 +55,14 @@ func (pInst *CGatlingWSServer) Upgrade(w http.ResponseWriter, r *http.Request) e
 	return pInst.wsServer.HandleRequest(w, r)
 }
 
-func (pInst *CGatlingWSServer) WSHandleClosed(fn CBWJClosedHandler) {
+func (pInst *CGatlingWSServer) WSHandleClosed(fn modProtocol.CBWJClosedHandler) {
 	pInst.dataReciver.WsHandlerClose(fn)
 }
 
-func (pInst *CGatlingWSServer) WSHandleConnected(fn CBWJConnectedHandler) {
+func (pInst *CGatlingWSServer) WSHandleConnected(fn modProtocol.CBWJConnectedHandler) {
 	pInst.dataReciver.WsHandlerConnect(fn)
 }
 
-func (pInst *CGatlingWSServer) WSHandleMessage(fn CBWJMessageHandler) {
+func (pInst *CGatlingWSServer) WSHandleMessage(fn modProtocol.CBWJMessageHandler) {
 	pInst.dataReciver.WsHandlerMessage(fn)
 }

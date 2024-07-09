@@ -4,7 +4,6 @@ package honorMelody
 
 import (
 	"net/http"
-	"sync"
 
 	"github.com/gorilla/websocket"
 )
@@ -157,16 +156,12 @@ func (m *Melody) HandleRequestWithKeys(w http.ResponseWriter, r *http.Request, k
 		return err
 	}
 
-	session := &Session{
-		Request:    r,
-		Keys:       keys,
-		conn:       conn,
-		output:     make(chan envelope, m.Config.MessageBufferSize),
-		outputDone: make(chan struct{}),
-		melody:     m,
-		open:       true,
-		rwmutex:    &sync.RWMutex{},
-	}
+	session := NewSession()
+	session.Request = r
+	session.Keys = keys
+	session.conn = conn
+	session.melody = m
+	session.output = make(chan envelope, m.Config.MessageBufferSize)
 
 	m.hub.register <- session
 

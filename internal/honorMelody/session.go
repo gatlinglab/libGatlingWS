@@ -11,16 +11,25 @@ import (
 
 // Session wrapper around websocket connections.
 type Session struct {
-	Request    *http.Request
-	Keys       map[string]any
-	conn       *websocket.Conn
-	output     chan envelope
-	outputDone chan struct{}
-	melody     *Melody
-	open       bool
-	rwmutex    *sync.RWMutex
+	Request     *http.Request
+	Keys        map[string]any
+	conn        *websocket.Conn
+	output      chan envelope
+	outputDone  chan struct{}
+	melody      *Melody
+	open        bool
+	rwmutex     *sync.RWMutex
+	DataAdapter interface{}
 }
 
+func NewSession() *Session {
+	return &Session{
+		outputDone:  make(chan struct{}),
+		open:        true,
+		rwmutex:     &sync.RWMutex{},
+		DataAdapter: nil,
+	}
+}
 func (s *Session) writeMessage(message envelope) {
 	if s.closed() {
 		s.melody.errorHandler(s, ErrWriteClosed)

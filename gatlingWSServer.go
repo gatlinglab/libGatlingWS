@@ -3,18 +3,19 @@ package libGatlingWSServer
 import (
 	"net/http"
 
-	"github.com/gatlinglab/libGatlingWSServer/internal/modDataPackage"
+	"github.com/gatlinglab/libGatlingWSServer/modDataPackage"
+	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
 )
 
 type IWJWSServer interface {
 	Initialize(port int) error
 	HttpHandleFunc(pattern string, fn http.HandlerFunc)
-	WSHandleConnected(fn modDataPackage.CBWJConnectedHandler)
-	WSHandleClosed(fn modDataPackage.CBWJClosedHandler)
-	WSHandleMessage(fn modDataPackage.CBWJMessageHandler)
+	WSHandleConnected(fn modProtocol.CBWJConnectedHandler)
+	WSHandleClosed(fn modProtocol.CBWJClosedHandler)
+	WSHandleMessage(fn modProtocol.CBWJMessageHandler)
 	Start() error
 }
 
-func WWS_NewServer(port int) IWJWSServer {
+func WWS_NewServer() IWJWSServer {
 	return modDataPackage.NewWSServer()
 }

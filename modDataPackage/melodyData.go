@@ -39,7 +39,7 @@ func (pInst *CWJMelodyDataHandler) OnConnect(session *honorMelody.Session) {
 
 func (pInst *CWJMelodyDataHandler) OnMessage(session *honorMelody.Session, msg []byte) {
 	wjSession := session.DataAdapter.(*modProtocol.CWJSocket)
-	pInst.adapter.OnMessage(wjSession, len(msg), msg)
+	pInst.adapter.OnMessage(wjSession, msg)
 	// protocol
 }
 

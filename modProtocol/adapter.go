@@ -1,38 +1,61 @@
 package modProtocol
 
 import (
-	"encoding/binary"
 	"fmt"
 )
 
-type CBWJConnectedHandler func(IWJSocket)
-type CBWJClosedHandler func(IWJSocket)
-type CBWJMessageHandler func(IWJSocket, uint32, []byte) // len, data;
-
 const C_P1_MAXDATALEN = 256
 
+type IWJSocket interface {
+	Write(msg []byte) error
+	WriteBinary(msg []byte) error
+}
+type CBWJConnectedHandler func(IWJSocket)
+type CBWJClosedHandler func(IWJSocket)
+type CBWJMessageHandler func(IWJSocket, uint32, []byte)       // len, data;
+type CBWJMessageBinaryHandler func(IWJSocket, uint32, []byte) // len, data;
+
 type ProtocolAdapter struct {
-	msgHandler CBWJMessageHandler
-	msgcache   []byte
+	msgHandler       CBWJMessageHandler
+	msgBinaryHandler CBWJMessageBinaryHandler
+	msgcache         []byte
 }
 
 func NewProtocolAdapter() *ProtocolAdapter {
-	return &ProtocolAdapter{msgHandler: emptyDefaultMessageHandler, msgcache: make([]byte, C_P1_MAXDATALEN)}
+	return &ProtocolAdapter{msgHandler: emptyDefaultMessageHandler,
+		msgBinaryHandler: emptyDefaultMessageHandler,
+		msgcache:         make([]byte, C_P1_MAXDATALEN)}
 }
 
 func (pInst *ProtocolAdapter) WsHandlerMessage(fn CBWJMessageHandler) {
 	pInst.msgHandler = fn
 }
 
+func (pInst *ProtocolAdapter) WsHandlerMessageBinary(fn CBWJMessageBinaryHandler) {
+	pInst.msgBinaryHandler = fn
+}
+
 func (pInst *ProtocolAdapter) OnMessage(s IWJSocket, msg []byte) {
-	fmt.Println("server protocol get message", len(msg))
+	//fmt.Println("server protocol get message", len(msg))
 	switch msg[0] {
-	case 0x2: // version 1;
-		pInst.messageVersion1(s, msg)
-	case string(rune(33))[0]:
+	case 33: //string(rune(33))[0]:
 		pInst.messageVersion0(s, msg)
 
 	default:
+		fmt.Println("protol error: ", msg, len(msg))
+		//error
+
+	}
+}
+
+func (pInst *ProtocolAdapter) OnMessageBinary(s IWJSocket, msg []byte) {
+	//fmt.Println("server protocol get message", len(msg))
+	switch msg[0] {
+	case 0x2: // version 1;
+		pInst.messageVersion1(s, msg)
+
+	default:
+		fmt.Println("protol error: ", msg, len(msg))
 		//error
 
 	}
@@ -53,20 +76,30 @@ and see inside binary.BigEndian.Uint16(b []byte):
 	}
 */
 func (pInst *ProtocolAdapter) messageVersion1(s IWJSocket, msg []byte) {
-	len1 := binary.BigEndian.Uint16(msg[1:2])
+	//fmt.Println("binary protol1", string(msg), len(msg))
+	var pLen int16 = int16(msg[1]<<8 | msg[2])
+	//fmt.Println("binary protol1 data len: ", pLen)
+	//var lendata []byte
+	//lendata = append(lendata, msg[1:3]...)
+	len1 := pLen //binary.BigEndian.Uint16(lendata)
 	if len1 > C_P1_MAXDATALEN {
 		fmt.Println("protol1 error: len > C_P1_MAXDATALEN")
 		return
 	}
+	//fmt.Println("binary protol1 -2", string(msg))
 	if len(msg) < int(len1)+3 {
 		fmt.Println("protol1 error: t < int(len)+3")
 		return
 	}
+	//fmt.Println("binary protol1-3", string(msg))
 	var iLen uint32 = uint32(len1)
-	copy(pInst.msgcache[:], msg[3:len1])
+	copy(pInst.msgcache[:], msg[3:3+len1])
 
-	pInst.msgHandler(s, iLen, pInst.msgcache)
+	//fmt.Println("binary protol1-4", string(pInst.msgcache))
+
+	pInst.msgBinaryHandler(s, iLen, pInst.msgcache)
 }
+
 func (pInst *ProtocolAdapter) messageVersion0(s IWJSocket, msg []byte) {
 
 	//copy(pInst.msgcache[:], msg[1:])

@@ -35,7 +35,6 @@ func commandRun() {
 		case "quit", "exit":
 			bQuit = true
 		default:
-			fmt.Println(g_socket)
 			g_socket.WriteBinary([]byte(input))
 
 		}

@@ -45,12 +45,17 @@ func (pInst *CGatlingWSClient) Connect() error {
 	go func() {
 		defer close(done)
 		for {
-			_, message, err := connHandler.ReadMessage()
+			t, message, err := connHandler.ReadMessage()
 			if err != nil {
 				pInst.handlerClose(pInst.wsSocket)
 				return
 			}
-			pInst.adapter.OnMessage(pInst.wsSocket, message)
+			switch t {
+			case websocket.TextMessage:
+				pInst.adapter.OnMessage(pInst.wsSocket, message)
+			case websocket.BinaryMessage:
+				pInst.adapter.OnMessageBinary(pInst.wsSocket, message)
+			}
 		}
 	}()
 
@@ -72,4 +77,8 @@ func (pInst *CGatlingWSClient) WSHandleConnected(fn modProtocol.CBWJConnectedHan
 
 func (pInst *CGatlingWSClient) WSHandleMessage(fn modProtocol.CBWJMessageHandler) {
 	pInst.adapter.WsHandlerMessage(fn)
+}
+
+func (pInst *CGatlingWSClient) WSHandleMessageBinary(fn modProtocol.CBWJMessageBinaryHandler) {
+	pInst.adapter.WsHandlerMessageBinary(fn)
 }

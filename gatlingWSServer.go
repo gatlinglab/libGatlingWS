@@ -13,6 +13,7 @@ type IWJWSServer interface {
 	WSHandleConnected(fn modProtocol.CBWJConnectedHandler)
 	WSHandleClosed(fn modProtocol.CBWJClosedHandler)
 	WSHandleMessage(fn modProtocol.CBWJMessageHandler)
+	WSHandleMessageBinary(fn modProtocol.CBWJMessageBinaryHandler)
 	Start() error
 }
 

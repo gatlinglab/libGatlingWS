@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
+	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
 	"github.com/gorilla/websocket"
 )
 
@@ -16,11 +17,9 @@ func NewCWJSessionServer(conn *websocket.Conn) *CWJSocketClient {
 }
 
 func (pInst *CWJSocketClient) Write(msg []byte) error {
-	return pInst.wsConn.WriteMessage(websocket.TextMessage, msg)
-}
-func (pInst *CWJSocketClient) WriteBinary(msg []byte) error {
+	//return pInst.wsConn.WriteMessage(websocket.TextMessage, msg)
+
 	fmt.Println("client write msg: ", string(msg))
-	//return pInst.wsConn.WriteMessage(websocket.BinaryMessage, msg)
 	len1 := len(msg)
 	data := new(bytes.Buffer) // = make([]byte, 0)
 	var datahead = make([]byte, 3)
@@ -33,5 +32,13 @@ func (pInst *CWJSocketClient) WriteBinary(msg []byte) error {
 	data.Write(msg)
 	fmt.Println("data last: ", len(data.Bytes()), data.Bytes())
 
-	return pInst.wsConn.WriteMessage(websocket.BinaryMessage, data.Bytes())
+	return pInst.wsConn.WriteMessage(websocket.TextMessage, data.Bytes())
+}
+func (pInst *CWJSocketClient) WriteBinary(msg []byte) error {
+	data1, err := modProtocol.MP_PackageDataVersion1(msg)
+	if err != nil {
+		return err
+	}
+
+	return pInst.wsConn.WriteMessage(websocket.BinaryMessage, data1)
 }

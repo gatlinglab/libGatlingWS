@@ -60,6 +60,10 @@ func (pInst *CWJWSServer) WsHandlerMessage(fn func(*honorMelody.Session, []byte)
 	pInst.wsServer.HandleMessage(fn)
 }
 
+func (pInst *CWJWSServer) WsHandlerMessageBinary(fn func(*honorMelody.Session, []byte)) {
+	pInst.wsServer.HandleMessageBinary(fn)
+}
+
 /*func (pInst *CWJWSServer) WSHandleConnected(fn func(CWSSocket)) {
 	pInst.handlerOnConnect = fn
 }

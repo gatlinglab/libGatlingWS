@@ -37,6 +37,7 @@ func (pInst *CGatlingWSServer) Initialize(port int) error {
 	pInst.wsServer.HandleConnect(pInst.dataReciver.OnConnect)
 	pInst.wsServer.HandleClose(pInst.dataReciver.OnClose)
 	pInst.wsServer.HandleMessage(pInst.dataReciver.OnMessage)
+	pInst.wsServer.HandleMessageBinary(pInst.dataReciver.OnMessageBinary)
 
 	return nil
 }
@@ -66,4 +67,8 @@ func (pInst *CGatlingWSServer) WSHandleConnected(fn modProtocol.CBWJConnectedHan
 
 func (pInst *CGatlingWSServer) WSHandleMessage(fn modProtocol.CBWJMessageHandler) {
 	pInst.dataReciver.WsHandlerMessage(fn)
+}
+
+func (pInst *CGatlingWSServer) WSHandleMessageBinary(fn modProtocol.CBWJMessageBinaryHandler) {
+	pInst.dataReciver.WsHandlerMessageBinary(fn)
 }

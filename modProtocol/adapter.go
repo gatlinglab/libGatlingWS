@@ -5,9 +5,9 @@ import (
 	"fmt"
 )
 
-type CBWJConnectedHandler func(*CWJSocket)
-type CBWJClosedHandler func(*CWJSocket)
-type CBWJMessageHandler func(*CWJSocket, uint32, []byte) // len, data;
+type CBWJConnectedHandler func(IWJSocket)
+type CBWJClosedHandler func(IWJSocket)
+type CBWJMessageHandler func(IWJSocket, uint32, []byte) // len, data;
 
 const C_P1_MAXDATALEN = 256
 
@@ -24,7 +24,8 @@ func (pInst *ProtocolAdapter) WsHandlerMessage(fn CBWJMessageHandler) {
 	pInst.msgHandler = fn
 }
 
-func (pInst *ProtocolAdapter) OnMessage(s *CWJSocket, msg []byte) {
+func (pInst *ProtocolAdapter) OnMessage(s IWJSocket, msg []byte) {
+	fmt.Println("server protocol get message", len(msg))
 	switch msg[0] {
 	case 0x2: // version 1;
 		pInst.messageVersion1(s, msg)
@@ -51,7 +52,7 @@ and see inside binary.BigEndian.Uint16(b []byte):
 	    return uint16(b[1]) | uint16(b[0])<<8
 	}
 */
-func (pInst *ProtocolAdapter) messageVersion1(s *CWJSocket, msg []byte) {
+func (pInst *ProtocolAdapter) messageVersion1(s IWJSocket, msg []byte) {
 	len1 := binary.BigEndian.Uint16(msg[1:2])
 	if len1 > C_P1_MAXDATALEN {
 		fmt.Println("protol1 error: len > C_P1_MAXDATALEN")
@@ -66,7 +67,7 @@ func (pInst *ProtocolAdapter) messageVersion1(s *CWJSocket, msg []byte) {
 
 	pInst.msgHandler(s, iLen, pInst.msgcache)
 }
-func (pInst *ProtocolAdapter) messageVersion0(s *CWJSocket, msg []byte) {
+func (pInst *ProtocolAdapter) messageVersion0(s IWJSocket, msg []byte) {
 
 	//copy(pInst.msgcache[:], msg[1:])
 	iLen := len(msg) - 1
@@ -74,4 +75,4 @@ func (pInst *ProtocolAdapter) messageVersion0(s *CWJSocket, msg []byte) {
 	pInst.msgHandler(s, uint32(iLen), msg[1:]) //pInst.msgcache[:iLen])
 }
 
-func emptyDefaultMessageHandler(s *CWJSocket, t uint32, msg []byte) {}
+func emptyDefaultMessageHandler(s IWJSocket, t uint32, msg []byte) {}

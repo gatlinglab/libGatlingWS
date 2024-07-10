@@ -1,6 +1,8 @@
 package modDataPackage
 
 import (
+	"fmt"
+
 	"github.com/gatlinglab/libGatlingWSServer/internal/honorMelody"
 	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
 )
@@ -17,8 +19,8 @@ import (
 type CWJMelodyDataHandler struct {
 	handlerClose   modProtocol.CBWJClosedHandler
 	handlerConnect modProtocol.CBWJConnectedHandler
-	handlerMessage modProtocol.CBWJMessageHandler
-	adapter        *modProtocol.ProtocolAdapter
+	//handlerMessage modProtocol.CBWJMessageHandler
+	adapter *modProtocol.ProtocolAdapter
 }
 
 func newMelodyDataHandler() *CWJMelodyDataHandler {
@@ -26,21 +28,22 @@ func newMelodyDataHandler() *CWJMelodyDataHandler {
 }
 
 func (pInst *CWJMelodyDataHandler) OnClose(session *honorMelody.Session, code int, reason string) error {
-	wjSession := session.DataAdapter.(*modProtocol.CWJSocket)
+	fmt.Println("connect: ", session)
+	wjSession := session.DataAdapter.(modProtocol.IWJSocket)
 	pInst.handlerClose(wjSession)
 	return nil
 }
 
 func (pInst *CWJMelodyDataHandler) OnConnect(session *honorMelody.Session) {
-	wjSession := modProtocol.NewCWJSession(session)
+	wjSession := modProtocol.NewCWJSessionServer(session)
 	session.DataAdapter = wjSession
 	pInst.handlerConnect(wjSession)
 }
 
 func (pInst *CWJMelodyDataHandler) OnMessage(session *honorMelody.Session, msg []byte) {
-	wjSession := session.DataAdapter.(*modProtocol.CWJSocket)
+	wjSession := session.DataAdapter.(modProtocol.IWJSocket)
+	fmt.Println("melody data: ", string(msg), msg)
 	pInst.adapter.OnMessage(wjSession, msg)
-	// protocol
 }
 
 func (pInst *CWJMelodyDataHandler) WsHandlerClose(fn modProtocol.CBWJClosedHandler) {
@@ -52,6 +55,6 @@ func (pInst *CWJMelodyDataHandler) WsHandlerConnect(fn modProtocol.CBWJConnected
 }
 
 func (pInst *CWJMelodyDataHandler) WsHandlerMessage(fn modProtocol.CBWJMessageHandler) {
-	pInst.handlerMessage = fn
+	//pInst.handlerMessage = fn
 	pInst.adapter.WsHandlerMessage(fn)
 }

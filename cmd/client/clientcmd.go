@@ -22,6 +22,7 @@ func main() {
 	pInst.WSHandleConnected(onConnect)
 	pInst.WSHandleClosed(onClose)
 	pInst.WSHandleMessage(onMessage)
+	pInst.WSHandleMessageBinary(onMessageBinary)
 
 	err = pInst.Connect()
 	if err != nil {
@@ -40,4 +41,8 @@ func onClose(sock modProtocol.IWJSocket) {
 }
 func onMessage(sock modProtocol.IWJSocket, len1 uint32, msg []byte) {
 	fmt.Println("onMessage: ", string(msg))
+}
+
+func onMessageBinary(sock modProtocol.IWJSocket, len1 uint32, msg []byte) {
+	fmt.Println("onMessage binary: ", string(msg))
 }

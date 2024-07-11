@@ -3,8 +3,8 @@ package modDataPackage
 import (
 	"fmt"
 
-	"github.com/gatlinglab/libGatlingWSServer/internal/honorMelody"
-	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
+	"github.com/gatlinglab/libGatlingWS/internal/honorMelody"
+	"github.com/gatlinglab/libGatlingWS/modProtocol"
 )
 
 type CWJMelodyDataHandler struct {

@@ -4,13 +4,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gatlinglab/libGatlingWSServer"
-	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
+	"github.com/gatlinglab/libGatlingWS"
+	"github.com/gatlinglab/libGatlingWS/modProtocol"
 )
 
 func main() {
 
-	pInst := libGatlingWSServer.WWS_NewServer()
+	pInst := libGatlingWS.WWS_NewServer()
 
 	err := pInst.Initialize(8080)
 	if err != nil {

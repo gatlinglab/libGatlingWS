@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
+	"github.com/gatlinglab/libGatlingWS/modProtocol"
 	"github.com/gorilla/websocket"
 )
 

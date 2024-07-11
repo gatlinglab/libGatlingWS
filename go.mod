@@ -1,4 +1,4 @@
-module github.com/gatlinglab/libGatlingWSServer
+module github.com/gatlinglab/libGatlingWS
 
 go 1.22.3
 

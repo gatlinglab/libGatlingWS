@@ -3,15 +3,15 @@ package main
 import (
 	"fmt"
 
-	"github.com/gatlinglab/libGatlingWSServer"
-	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
+	"github.com/gatlinglab/libGatlingWS"
+	"github.com/gatlinglab/libGatlingWS/modProtocol"
 )
 
 var g_socket modProtocol.IWJSocket = nil
 
 func main() {
 
-	pInst := libGatlingWSServer.WWS_NewClient()
+	pInst := libGatlingWS.WWS_NewClient()
 
 	err := pInst.Initialize("127.0.0.1:8080", "/ws")
 	if err != nil {

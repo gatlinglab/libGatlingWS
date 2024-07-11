@@ -5,8 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	//gatlingWS "github.com/gatlinglab/libGatlingWSServer"
-	"github.com/gatlinglab/libGatlingWSServer/internal/honorMelody"
+	"github.com/gatlinglab/libGatlingWS/internal/honorMelody"
 )
 
 type CWJWSServer struct {

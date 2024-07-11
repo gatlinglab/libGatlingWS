@@ -1,10 +1,10 @@
-package libGatlingWSServer
+package libGatlingWS
 
 import (
 	"net/http"
 
-	"github.com/gatlinglab/libGatlingWSServer/modDataPackage"
-	"github.com/gatlinglab/libGatlingWSServer/modProtocol"
+	"github.com/gatlinglab/libGatlingWS/modDataPackage"
+	"github.com/gatlinglab/libGatlingWS/modProtocol"
 )
 
 type IWJWSServer interface {

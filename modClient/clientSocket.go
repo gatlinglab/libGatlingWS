@@ -9,7 +9,8 @@ import (
 )
 
 type CWJSocketClient struct {
-	wsConn *websocket.Conn
+	wsConn   *websocket.Conn
+	userdata interface{}
 }
 
 func NewCWJSessionServer(conn *websocket.Conn) *CWJSocketClient {
@@ -41,4 +42,10 @@ func (pInst *CWJSocketClient) WriteBinary(msg []byte) error {
 	}
 
 	return pInst.wsConn.WriteMessage(websocket.BinaryMessage, data1)
+}
+func (pInst *CWJSocketClient) PutSocketData(data interface{}) {
+	pInst.userdata = data
+}
+func (pInst *CWJSocketClient) GetSocketData() interface{} {
+	return pInst.userdata
 }

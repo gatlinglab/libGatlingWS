@@ -7,6 +7,7 @@ import (
 
 type CWJSocketServer struct {
 	melodySession *honorMelody.Session
+	userdata      interface{}
 }
 
 func NewCWJSessionServer(melodySession *honorMelody.Session) *CWJSocketServer {
@@ -32,4 +33,11 @@ func (pInst *CWJSocketServer) WriteBinary(msg []byte) error {
 	// fmt.Println("server data last: ", len(data.Bytes()), data.Bytes())
 
 	return pInst.melodySession.WriteBinary(data1)
+}
+
+func (pInst *CWJSocketServer) PutSocketData(data interface{}) {
+	pInst.userdata = data
+}
+func (pInst *CWJSocketServer) GetSocketData() interface{} {
+	return pInst.userdata
 }

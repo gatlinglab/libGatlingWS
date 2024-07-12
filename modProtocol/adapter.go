@@ -9,6 +9,8 @@ const C_P1_MAXDATALEN = 256
 type IWJSocket interface {
 	Write(msg []byte) error
 	WriteBinary(msg []byte) error
+	PutSocketData(interface{}) // save custom data to socket for next time using;
+	GetSocketData() interface{}
 }
 type CBWJConnectedHandler func(IWJSocket)
 type CBWJClosedHandler func(IWJSocket)

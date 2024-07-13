@@ -6,7 +6,7 @@ import (
 )
 
 type IWJWSClient interface {
-	Initialize(serverurl, wsUpgradePath string) error /// format ip:port, address:port; path: /ws
+	Initialize(protol, serverurl, wsUpgradePath string) error /// protocol, ws || wss, url format ip:port, address:port; path: /ws
 	WSHandleConnected(fn modProtocol.CBWJConnectedHandler)
 	WSHandleClosed(fn modProtocol.CBWJClosedHandler)
 	WSHandleMessage(fn modProtocol.CBWJMessageHandler)

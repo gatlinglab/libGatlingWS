@@ -22,11 +22,11 @@ func NewWSClient() *CGatlingWSClient {
 	return inst
 }
 
-func (pInst *CGatlingWSClient) Initialize(serverurl, wsUpgradePath string) error {
+func (pInst *CGatlingWSClient) Initialize(protol, serverurl, wsUpgradePath string) error {
 	if wsUpgradePath == "" {
 		wsUpgradePath = "/ws"
 	}
-	url1 := url.URL{Scheme: "ws", Host: serverurl, Path: wsUpgradePath}
+	url1 := url.URL{Scheme: protol, Host: serverurl, Path: wsUpgradePath}
 	pInst.wsUrl = &url1
 
 	return nil

@@ -13,7 +13,7 @@ func main() {
 
 	pInst := libGatlingWS.WWS_NewClient()
 
-	err := pInst.Initialize("127.0.0.1:8080", "/ws")
+	err := pInst.Initialize("ws", "127.0.0.1:8080", "/ws")
 	if err != nil {
 		fmt.Println("ws connect error: ", err)
 		return

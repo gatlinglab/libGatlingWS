@@ -79,13 +79,13 @@ and see inside binary.BigEndian.Uint16(b []byte):
 */
 func (pInst *ProtocolAdapter) messageVersion1(s IWJSocket, msg []byte) {
 	//fmt.Println("binary protol1", string(msg), len(msg))
-	var pLen int16 = int16(msg[1])<<8 | int16(msg[2])
+	var len1 int16 = int16(msg[1])<<8 | int16(msg[2])
 	//fmt.Println("binary protol1 data len: ", pLen)
 	//var lendata []byte
 	//lendata = append(lendata, msg[1:3]...)
-	len1 := pLen //binary.BigEndian.Uint16(lendata)
+	//len1 := pLen //binary.BigEndian.Uint16(lendata)
 	if len1 > C_P1_MAXDATALEN {
-		fmt.Println("protol1 error: len > C_P1_MAXDATALEN")
+		fmt.Println("protol1 error: len > C_P1_MAXDATALEN", len1, C_P1_MAXDATALEN)
 		return
 	}
 	//fmt.Println("binary protol1 -2", string(msg))

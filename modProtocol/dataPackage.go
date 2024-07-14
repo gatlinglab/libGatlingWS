@@ -4,6 +4,8 @@ import (
 	"bytes"
 )
 
+const CPD_VERSION1_HEADLEN = 3
+
 func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	iLen1 := len(msg)
 	// if iLen1 > C_P1_MAXDATALEN {
@@ -25,7 +27,7 @@ func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	if iLen1 > C_P1_MAXDATALEN {
 		//return nil, errors.New("data len > C_P1_MAXDATALEN")
 		iLen1 = C_P1_MAXDATALEN
-		data.Write(msg[:C_P1_MAXDATALEN])
+		data.Write(msg[:C_P1_MAXDATALEN-CPD_VERSION1_HEADLEN])
 	} else {
 		data.Write(msg)
 	}
@@ -33,5 +35,5 @@ func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	return data.Bytes(), nil
 }
 func MP_PackageDataVersion1HeadLen() int {
-	return 3
+	return CPD_VERSION1_HEADLEN
 }

@@ -36,12 +36,18 @@ func (pInst *CWJSocketClient) Write(msg []byte) error {
 	return pInst.wsConn.WriteMessage(websocket.TextMessage, data.Bytes())
 }
 func (pInst *CWJSocketClient) WriteBinary(msg []byte) error {
-	data1, err := modProtocol.MP_PackageDataVersion1(msg)
-	if err != nil {
-		return err
+	var lendata int = len(msg)
+	var lenSendTotal int = 0
+	for lenSendTotal < lendata {
+		data1, err := modProtocol.MP_PackageDataVersion1(msg)
+		if err != nil {
+			return err
+		}
+		pInst.wsConn.WriteMessage(websocket.BinaryMessage, data1)
+		lenSendTotal += len(data1) - modProtocol.MP_PackageDataVersion1HeadLen()
 	}
 
-	return pInst.wsConn.WriteMessage(websocket.BinaryMessage, data1)
+	return nil
 }
 func (pInst *CWJSocketClient) PutSocketData(data interface{}) {
 	pInst.userdata = data

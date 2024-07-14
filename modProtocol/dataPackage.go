@@ -2,13 +2,13 @@ package modProtocol
 
 import (
 	"bytes"
-	"errors"
 )
 
 func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	iLen1 := len(msg)
 	if iLen1 > C_P1_MAXDATALEN {
-		return nil, errors.New("data len > C_P1_MAXDATALEN")
+		//return nil, errors.New("data len > C_P1_MAXDATALEN")
+		iLen1 = C_P1_MAXDATALEN
 	}
 	//fmt.Println("client write msg: ", string(msg))
 	//return pInst.wsConn.WriteMessage(websocket.BinaryMessage, msg)
@@ -21,7 +21,17 @@ func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	data.WriteByte(0x2)
 	data.WriteByte(byte(len1 >> 8))
 	data.WriteByte(byte(len1))
-	data.Write(msg)
+
+	if iLen1 > C_P1_MAXDATALEN {
+		//return nil, errors.New("data len > C_P1_MAXDATALEN")
+		iLen1 = C_P1_MAXDATALEN
+		data.Write(msg[:C_P1_MAXDATALEN])
+	} else {
+		data.Write(msg)
+	}
 	//fmt.Println("data last: ", len(data.Bytes()), data.Bytes())
 	return data.Bytes(), nil
+}
+func MP_PackageDataVersion1HeadLen() int {
+	return 3
 }

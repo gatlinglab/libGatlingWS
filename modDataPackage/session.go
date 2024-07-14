@@ -22,7 +22,7 @@ func (pInst *CWJSocketServer) WriteBinary(msg []byte) error {
 	var lendata int = len(msg)
 	var lenSendTotal int = 0
 	for lenSendTotal < lendata {
-		data1, err := modProtocol.MP_PackageDataVersion1(msg)
+		data1, err := modProtocol.MP_PackageDataVersion1(msg[lenSendTotal:])
 		if err != nil {
 			return err
 		}

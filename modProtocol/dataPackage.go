@@ -5,7 +5,7 @@ import (
 )
 
 const CPD_VERSION1_HEADLEN = 3
-const c_max_datalength = C_P1_MAXDATALEN - CPD_VERSION1_HEADLEN
+const c_max_datalength = C_P1_MAXDATALEN - CPD_VERSION1_HEADLEN - 1
 
 func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	iLen1 := len(msg)

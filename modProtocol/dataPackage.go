@@ -6,10 +6,10 @@ import (
 
 func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	iLen1 := len(msg)
-	if iLen1 > C_P1_MAXDATALEN {
-		//return nil, errors.New("data len > C_P1_MAXDATALEN")
-		iLen1 = C_P1_MAXDATALEN
-	}
+	// if iLen1 > C_P1_MAXDATALEN {
+	// 	//return nil, errors.New("data len > C_P1_MAXDATALEN")
+	// 	iLen1 = C_P1_MAXDATALEN
+	// }
 	//fmt.Println("client write msg: ", string(msg))
 	//return pInst.wsConn.WriteMessage(websocket.BinaryMessage, msg)
 	len1 := len(msg)

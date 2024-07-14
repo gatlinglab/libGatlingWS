@@ -2,6 +2,7 @@ package modProtocol
 
 import (
 	"bytes"
+	"fmt"
 )
 
 const CPD_VERSION1_HEADLEN = 3
@@ -32,6 +33,7 @@ func MP_PackageDataVersion1(msg []byte) ([]byte, error) {
 	// } else {
 	// 	data.Write(msg)
 	// }
+	fmt.Println("*** libaray write data len: ", iLen1)
 	data.Write(msg[:iLen1])
 	//fmt.Println("data last: ", len(data.Bytes()), data.Bytes())
 	return data.Bytes(), nil

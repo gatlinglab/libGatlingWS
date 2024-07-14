@@ -4,7 +4,7 @@ import (
 	"fmt"
 )
 
-const C_P1_MAXDATALEN = 256
+const C_P1_MAXDATALEN = 1024
 
 type IWJSocket interface {
 	Write(msg []byte) error

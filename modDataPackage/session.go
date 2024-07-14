@@ -19,9 +19,15 @@ func (pInst *CWJSocketServer) Write(msg []byte) error {
 }
 
 func (pInst *CWJSocketServer) WriteBinary(msg []byte) error {
-	data1, err := modProtocol.MP_PackageDataVersion1(msg)
-	if err != nil {
-		return err
+	var lendata int = len(msg)
+	var lenSendTotal int = 0
+	for lenSendTotal < lendata {
+		data1, err := modProtocol.MP_PackageDataVersion1(msg)
+		if err != nil {
+			return err
+		}
+		pInst.melodySession.WriteBinary(data1)
+		lenSendTotal += len(data1) - modProtocol.MP_PackageDataVersion1HeadLen()
 	}
 	// fmt.Println("server write binary msg: ", string(msg))
 	// len1 := len(msg)
@@ -32,7 +38,7 @@ func (pInst *CWJSocketServer) WriteBinary(msg []byte) error {
 	// data.Write(msg)
 	// fmt.Println("server data last: ", len(data.Bytes()), data.Bytes())
 
-	return pInst.melodySession.WriteBinary(data1)
+	return nil //pInst.melodySession.WriteBinary(data1)
 }
 
 func (pInst *CWJSocketServer) PutSocketData(data interface{}) {

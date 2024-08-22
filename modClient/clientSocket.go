@@ -54,3 +54,6 @@ func (pInst *CWJSocketClient) PutSocketData(data interface{}) {
 func (pInst *CWJSocketClient) GetSocketData() interface{} {
 	return pInst.userdata
 }
+func (pInst *CWJSocketClient) Close() {
+	pInst.wsConn.Close()
+}

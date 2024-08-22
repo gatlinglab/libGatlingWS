@@ -11,6 +11,7 @@ type IWJSocket interface {
 	WriteBinary(msg []byte) error
 	PutSocketData(interface{}) // save custom data to socket for next time using;
 	GetSocketData() interface{}
+	Close()
 }
 type CBWJConnectedHandler func(IWJSocket)
 type CBWJClosedHandler func(IWJSocket)

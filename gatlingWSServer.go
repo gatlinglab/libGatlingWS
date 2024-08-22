@@ -15,6 +15,7 @@ type IWJWSServer interface {
 	WSHandleMessage(fn modProtocol.CBWJMessageHandler)
 	WSHandleMessageBinary(fn modProtocol.CBWJMessageBinaryHandler)
 	Start() error
+	Stop()
 }
 
 func WWS_NewServer() IWJWSServer {

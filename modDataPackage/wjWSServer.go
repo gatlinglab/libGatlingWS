@@ -48,6 +48,9 @@ func (pInst *CGatlingWSServer) Start() error {
 	err := http.ListenAndServe(listenStr, pInst.router)
 	return err
 }
+func (pInst *CGatlingWSServer) Stop() {
+	// can not stop now;
+}
 
 func (pInst *CGatlingWSServer) HttpHandleFunc(pattern string, fn http.HandlerFunc) {
 	pInst.router.HandlerFunc(pattern, fn)

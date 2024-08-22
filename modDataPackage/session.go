@@ -47,3 +47,6 @@ func (pInst *CWJSocketServer) PutSocketData(data interface{}) {
 func (pInst *CWJSocketServer) GetSocketData() interface{} {
 	return pInst.userdata
 }
+func (pInst *CWJSocketServer) Close() {
+	pInst.melodySession.Close()
+}
